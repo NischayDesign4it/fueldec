@@ -1,0 +1,106 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Fuel Management</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-image: url('your-image-url.jpg'); /* Add the image URL here */
+            background-size: cover;
+            background-position: center;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+            background-color: white;
+        }
+
+        .header {
+            background-color: #f2f2f2;
+            color: black;
+            padding: 20px;
+        }
+
+        .footer {
+            background-color: #f2f2f2;
+            color: black;
+            padding: 10px;
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            text-align: justify;
+            
+        }
+
+        h2 {
+            color: black;
+        }
+
+        form {
+            width: 50%;
+            margin: 0 auto;
+            background-color: rgba(255, 255, 255, 0.8); /* Add a semi-transparent white background */
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-top: 50px;
+            text-align: left; /* Align the form elements to the left */
+        }
+
+        .form-field {
+            display: inline-block;
+            width: 48%; /* Adjust the width as needed */
+            margin-right: 2%; /* Create a small gap between form fields */
+        }
+
+        button {
+            padding: 10px 20px;
+            border: 0;
+            background-color: #4CAF50;
+            color: #fff;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        p {
+            margin-top: 10px;
+        }
+
+        a {
+            text-decoration: none;
+            color: #4CAF50;
+        }
+        .header img {
+            float: left; /* Float the image to the left */
+            margin-right: 20px; /* Adjust the margin as needed */
+            margin-top: 0px;
+            
+        }
+    </style>
+</head>
+
+<body>
+    <div class="header">
+        <img src="{% static 'icon.png' %}" width="100", height="80">
+
+        <h1>Fuel Management System</h1>
+    </div>
+    <h2>Login</h2>
+    <form method="post" action="">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" >Login</button>
+    </form>
+    <div class="footer">
+        
+        <p style="text-align: center;">Copyright 2023 All Rights Reserved</p>
+    </div>
+</body>
+
+</html>
