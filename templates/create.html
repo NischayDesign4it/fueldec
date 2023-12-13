@@ -167,12 +167,12 @@
             <th>Odometer</th>
             <th>Quantity</th>
         </tr>
-        {% for vehicle in vehicle %}
+        {% for vehicles in vehicle %}
         <tr>
-            <td>{{ vehicle.id }}</td>
-            <td>{{ vehicle.vehicleNumber }}</td>
-            <td>{{ vehicle.odometer }}</td>
-            <td>{{ vehicle.quantity }}</td>
+            <td>{{ vehicles.id }}</td>
+            <td>{{ vehicles.vehicleNumber }}</td>
+            <td>{{ vehicles.odometer }}</td>
+            <td>{{ vehicles.quantity }}</td>
         </tr>
         {% endfor %}
     </table>

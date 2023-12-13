@@ -8,12 +8,8 @@ urlpatterns = [
     path("create/", views.enter_vehicle_data, name="create"),
     path("transactions/", views.transactions, name="transaction"),
 
-
-    
-
-
     path("log/", views.getData, name="getData"),
-
+    # path("last/", views.vehicle, name="getData"),
 
     path('dispense/', views.dispense, name='dispense'),
     path('Check-vehicle/', views.check_vehicle, name='check_vehicle'),

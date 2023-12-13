@@ -141,7 +141,7 @@
     <div class="header">
         <img src="{% static 'icon.png' %}" width="100", height="80">
 
-        <a class="add-transaction-button" href="{% url 'create' %}">Add Tank</a>
+        <a class="add-transaction-button" href="{% url 'create' %}">Add Vehicle</a>
         <h1>Fuel Management System</h1>
     </div>
     <h1>Transactions Log</h1>
@@ -149,14 +149,17 @@
     <table>
         <tr>
             <th>Sr. No.</th>
-            <th>Tank Number</th>
+            <th>Vehicle Number</th>
             <th>Transactions</th>
+            <th>TimeStamp</th>
+
         </tr>
-        {% for tank in tanks %}
+        {% for vehicles in vehicle %}
         <tr>
-            <td>{{ tank.id }}</td>
-            <td>{{ tank.tank_number }}</td>
-            <td>{{ tank.last_dispensed_quantity }}</td>
+            <td>{{ vehicles.id }}</td>
+            <td>{{ vehicles.vehicleNumber }}</td>
+            <td>{{ vehicles.last_dispensed_quantity }}</td>
+            <td>{{ vehicles.last_transaction_date }}</td>
             
         </tr>
         {% endfor %}

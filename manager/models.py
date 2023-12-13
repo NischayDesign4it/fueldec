@@ -6,6 +6,7 @@ from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 from django.utils import timezone
 
+
 class CustomUserManager(BaseUserManager):
     def create_user(self, email, password=None, **extra_fields):
         if not email:
@@ -27,6 +28,7 @@ class CustomUserManager(BaseUserManager):
 
         return self.create_user(email, password, **extra_fields)
 
+
 class CustomUser(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(unique=True)
     first_name = models.CharField(max_length=30)
@@ -42,14 +44,14 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
 
     def __str__(self):
         return self.email
-    
+
 
 class vehicle(models.Model):
     vehicleNumber = models.CharField(max_length=50, unique=True)
-    quantity = models.IntegerField(null= True)
-    odometer = models.IntegerField(null= True)
-    last_dispensed_quantity = models.IntegerField(default=0, null= True)
-
+    quantity = models.IntegerField(null=True)
+    odometer = models.IntegerField(null=True)
+    last_dispensed_quantity = models.IntegerField(default=0, null=True)
+    last_transaction_date = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return self.vehicleNumber

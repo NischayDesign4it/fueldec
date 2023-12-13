@@ -1,20 +1,14 @@
-from django.shortcuts import render,redirect
+from django.shortcuts import render, redirect
 from .forms import LoginForm, TankForm
 from django.contrib.auth import authenticate, login
 from rest_framework.decorators import api_view
 from .models import CustomUser, vehicle
 from rest_framework.response import Response
 from rest_framework import status
-from .serializers import  TankSerializer, TankdetailSerializer
+from .serializers import TankSerializer, TankdetailSerializer
 from rest_framework.views import APIView
 
 from django.contrib import messages
-
-
-
-
-
-
 
 # Create your views here.
 from django.http import HttpResponse
@@ -33,9 +27,6 @@ def user_login(request):
     else:
         form = LoginForm()
     return render(request, 'login.html', {'form': form})
-
-
-
 
 
 @api_view(['POST'])
@@ -59,18 +50,17 @@ def getData(request):
 
 @api_view(['POST'])
 def dispense(request):
-        vehicleNumber = request.data.get('vehicleNumber')
-        try:
-            vehicleDetails = vehicle.objects.get(vehicleNumber=vehicleNumber)
-            serializer = TankSerializer(vehicleDetails)
-            return Response({'Quantity': vehicleDetails.quantity})
-        except vehicleDetails.DoesNotExist:
-            return Response({'status': 'Vehicle does not exist'}, status=status.HTTP_404_NOT_FOUND)
-        
+    vehicleNumber = request.data.get('vehicleNumber')
+    try:
+        vehicleDetails = vehicle.objects.get(vehicleNumber=vehicleNumber)
+        serializer = TankSerializer(vehicleDetails)
+        return Response({'Quantity': vehicleDetails.quantity})
+    except vehicleDetails.DoesNotExist:
+        return Response({'status': 'Vehicle does not exist'}, status=status.HTTP_404_NOT_FOUND)
+
 
 @api_view(['POST'])
 def check_vehicle(request):
-
     if request.method == 'POST':
         vehicleNumber = request.data.get('vehicleNumber')
         odometer = request.data.get('odometer')
@@ -88,7 +78,6 @@ def check_vehicle(request):
             return Response({'status': 'Vehicle does not exist'}, status=status.HTTP_404_NOT_FOUND)
 
 
-
 class vehicleDataView(APIView):
     def get(self, request, vehicleNumber=None, *args, **kwargs):
         if vehicleNumber:
@@ -100,9 +89,9 @@ class vehicleDataView(APIView):
                 return Response({'status': 'Vehicle does not exist'}, status=status.HTTP_404_NOT_FOUND)
 
         vehicleDetails = vehicle.objects.all()
-        serializer = TankdetailSerializer(vehicleDetails,many=True)
+        serializer = TankdetailSerializer(vehicleDetails, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
-    
+
 
 @api_view(['POST'])
 def post_vehicle(request):
@@ -119,6 +108,35 @@ def post_vehicle(request):
         except vehicleDetails.DoesNotExist:
             return Response({'status': 'Vehicle does not exist'}, status=status.HTTP_404_NOT_FOUND)
 
+
+# @api_view(['POST', 'GET'])
+# def vehicle(request):
+#     if request.method == 'POST':
+#         vehicle_Number = request.data.get('vehicleNumber')
+#         quantity = request.data.get('quantity')
+
+#         try:
+#             vehicleDetails = vehicle.objects.get(vehicleNumber=vehicle_Number)
+#             vehicleDetails.quantity = quantity
+#             vehicleDetails.save()
+
+#             return Response({'status': 'Quantity updated successfully'})
+#         except vehicleDetails.DoesNotExist:
+#             return Response({'status': 'Vehicle does not exist'}, status=status.HTTP_404_NOT_FOUND)
+
+#     elif request.method == 'GET':
+#         vehicle_Number = request.query_params.get('vehicleNumber')
+
+#         try:
+#             vehicleDetails = vehicle.objects.get(vehicleNumber=vehicle_Number)
+#             last_transaction = {
+#                 'lastQuantity': vehicleDetails.last_dispensed_quantity,
+#                 'lastTransactionDate': vehicleDetails.last_transaction_date
+#             }
+#             return Response(last_transaction)
+#         except vehicleDetails.DoesNotExist:
+#             return Response({'status': 'Vehicle does not exist'}, status=status.HTTP_404_NOT_FOUND)
+
 @api_view(['GET'])
 def get_vehicle(request, vehicleNumber):
     if request.method == 'GET':
@@ -127,7 +145,7 @@ def get_vehicle(request, vehicleNumber):
             return Response({'vehicleNumber': vehicleDetails.vehicleNumber, 'quantity': vehicleDetails.quantity})
         except vehicleDetails.DoesNotExist:
             return Response({'status': 'Vehicle does not exist'}, status=status.HTTP_404_NOT_FOUND)
-        
+
 
 def enter_vehicle_data(request):
     if request.method == 'POST':
@@ -135,12 +153,12 @@ def enter_vehicle_data(request):
         if form.is_valid():
             form.save()
             messages.success(request, 'Vehicle data has been successfully entered.')
-    
-    vehicle = vehicle.objects.all()  # Retrieve the Tank objects
+
+    vehicleDetails = vehicle.objects.all()  # Retrieve the Tank objects
 
     form = TankForm()
-    
-    return render(request, 'create.html', {'form': form, 'vehicle': vehicle})
+
+    return render(request, 'create.html', {'form': form, 'vehicle': vehicleDetails})
 
 
 def transactions(request):
@@ -149,9 +167,9 @@ def transactions(request):
         if form.is_valid():
             form.save()
             messages.success(request, 'Vehicle data has been successfully entered.')
-    
-    vehicle = vehicle.objects.all()  # Retrieve the Tank objects
+
+    vehicleDetails = vehicle.objects.all()  # Retrieve the Tank objects
 
     form = TankForm()
-    
-    return render(request, 'transaction.html', {'form': form, 'vehicle': vehicle})
+
+    return render(request, 'transaction.html', {'form': form, 'vehicle': vehicleDetails})
