@@ -14,3 +14,4 @@ class TankForm(forms.ModelForm):
     class Meta:
         model = vehicle
         fields = ['vehicleNumber']
+

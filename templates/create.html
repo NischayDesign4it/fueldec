@@ -164,14 +164,12 @@
         <tr>
             <th>Sr. No.</th>
             <th>Vehicle Number</th>
-            <th>Odometer</th>
             <th>Quantity</th>
         </tr>
         {% for vehicles in vehicle %}
         <tr>
             <td>{{ vehicles.id }}</td>
             <td>{{ vehicles.vehicleNumber }}</td>
-            <td>{{ vehicles.odometer }}</td>
             <td>{{ vehicles.quantity }}</td>
         </tr>
         {% endfor %}

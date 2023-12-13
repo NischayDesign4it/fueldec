@@ -150,16 +150,19 @@
         <tr>
             <th>Sr. No.</th>
             <th>Vehicle Number</th>
+            <th>Odometer</th>
             <th>Transactions</th>
             <th>TimeStamp</th>
 
         </tr>
-        {% for vehicles in vehicle %}
+        {% for vehicles in vehicle_details %}
         <tr>
             <td>{{ vehicles.id }}</td>
             <td>{{ vehicles.vehicleNumber }}</td>
-            <td>{{ vehicles.last_dispensed_quantity }}</td>
-            <td>{{ vehicles.last_transaction_date }}</td>
+            <td>{{ vehicles.odometer }}</td>
+            <td>{{ vehicles.dispensedQuantity }}</td>
+            <td>{{ vehicles.timestamp }}</td>
+
             
         </tr>
         {% endfor %}
