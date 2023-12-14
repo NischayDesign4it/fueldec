@@ -8,6 +8,7 @@ urlpatterns = [
     path("create/", views.enter_vehicle_data, name="create"),
     path('transaction-log/<str:date>/', getBuyDate.as_view(), name='get_buy_date'),
     path("vehicle-list/", VehicleList.as_view(), name="VehicleList-log"),
+    path("transactions/", transaction.as_view(), name="transactions-log"),
 
     # path("odometer/", odometer.as_view(), name="odometer"),
 
