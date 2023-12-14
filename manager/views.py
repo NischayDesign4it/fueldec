@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from django.shortcuts import render, redirect
 from django.views import View
 
@@ -82,7 +84,7 @@ def check_vehicle(request):
         odometer = request.data.get('odometer')
 
         try:
-            vehicleDetails = transactions.objects.get(vehicleNumber=vehicleNumber)
+            vehicleDetails = vehicle.objects.get(vehicleNumber=vehicleNumber)
 
             if odometer is not None:
                 # Save odometer value if provided
@@ -92,6 +94,13 @@ def check_vehicle(request):
             return Response({'status': 'Vehicle exists'})
         except vehicleDetails.DoesNotExist:
             return Response({'status': 'Vehicle does not exist'}, status=status.HTTP_404_NOT_FOUND)
+
+
+class VehicleList(APIView):
+    def get(self, request, *args, **kwargs):
+        vehicles = vehicle.objects.all()
+        serializer = TankSerializer(vehicles, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 # class vehicleDataView(APIView):
@@ -125,8 +134,6 @@ def post_vehicle(request):
             return Response({'status': 'Vehicle does not exist'}, status=status.HTTP_404_NOT_FOUND)
 
 
-
-
 @api_view(['GET'])
 def get_vehicle(request, vehicleNumber):
     if request.method == 'GET':
@@ -135,9 +142,6 @@ def get_vehicle(request, vehicleNumber):
             return Response({'vehicleNumber': vehicleDetails.vehicleNumber, 'quantity': vehicleDetails.quantity})
         except vehicleDetails.DoesNotExist:
             return Response({'status': 'Vehicle does not exist'}, status=status.HTTP_404_NOT_FOUND)
-
-
-
 
 
 class transaction(View):
@@ -159,11 +163,11 @@ def dispensed_quantity(request):
 
             # You can return the saved data or a success message
             response_data = {
-                'id': transaction.id,
+
                 'vehicleNumber': transaction.vehicleNumber,
-                'odometer': transaction.odometer,
                 'dispensedQuantity': transaction.dispensedQuantity,
-                'timestamp': transaction.timestamp,
+                'odometer': transaction.odometer,
+
             }
 
             return Response(response_data, status=status.HTTP_201_CREATED)
@@ -171,3 +175,36 @@ def dispensed_quantity(request):
             return Response({'error': 'Invalid input'}, status=status.HTTP_400_BAD_REQUEST)
     else:
         return Response({'error': 'Method not allowed'}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
+
+
+class getBuyDate(APIView):
+    def get(self, request, date, *args, **kwargs):
+        try:
+            date_object = datetime.strptime(date, '%Y-%m-%d')
+            transactions_for_date = transactions.objects.filter(timestamp__date=date_object.date())
+
+            serializer = TransactionSerializer(transactions_for_date, many=True)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        except ValueError:
+            return Response({"error": "Invalid date format. Use 'YYYY-MM-DD'."},
+                            status=status.HTTP_400_BAD_REQUEST)
+
+# class odometer(APIView):
+#     def post(self, request, *args, **kwargs):
+#         vehicle_number = request.data.get('vehicleNumber', None)
+#         odometer_value = request.data.get('odometer', None)
+#
+#         if not vehicle_number or not odometer_value:
+#             return Response({"error": "Both 'vehicleNumber' and 'odometer' are required."},
+#                             status=status.HTTP_400_BAD_REQUEST)
+#
+#         try:
+#             transaction = transactions.objects.get(vehicleNumber=vehicle_number)
+#             transaction.odometer = odometer_value
+#             transaction.save()
+#
+#             serializer = TransactionSerializer(transaction)
+#             return Response(serializer.data, status=status.HTTP_200_OK)
+#         except transactions.DoesNotExist:
+#             return Response({"error": f"Transaction with vehicleNumber {vehicle_number} does not exist."},
+#                             status=status.HTTP_404_NOT_FOUND)

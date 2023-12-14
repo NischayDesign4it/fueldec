@@ -17,4 +17,4 @@ class TankdetailSerializer(serializers.ModelSerializer):
 class TransactionSerializer(serializers.ModelSerializer):
     class Meta:
         model = transactions
-        fields = ('vehicleNumber', 'dispensedQuantity')
+        fields = '__all__'
