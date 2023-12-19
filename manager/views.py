@@ -208,3 +208,14 @@ class getBuyDate(APIView):
 #         except transactions.DoesNotExist:
 #             return Response({"error": f"Transaction with vehicleNumber {vehicle_number} does not exist."},
 #                             status=status.HTTP_404_NOT_FOUND)
+
+
+class TransactionsBulkCreateView(APIView):
+    def post(self, request, *args, **kwargs):
+        data = request.data.get('transactions', [])  # Assuming your data is passed as a list under 'transactions' key
+
+        serializer = TransactionSerializer(data=data, many=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
