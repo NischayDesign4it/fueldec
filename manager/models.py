@@ -64,3 +64,12 @@ class transactions(models.Model):
     def __str__(self):
         return self.vehicleNumber
 
+class pumpInfo(models.Model):
+    id = models.AutoField(primary_key=True)
+    pumpNumber = models.CharField(max_length=20)
+    vehicleNumber = models.CharField(max_length=50)
+    odometer = models.IntegerField(null=True)
+    pumpStatus = models.BooleanField(default=False)
+
+    def __str__(self):
+        return self.vehicleNumber
