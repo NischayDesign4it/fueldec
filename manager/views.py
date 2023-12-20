@@ -6,10 +6,10 @@ from django.views import View
 from .forms import LoginForm, TankForm
 from django.contrib.auth import authenticate, login
 from rest_framework.decorators import api_view
-from .models import CustomUser, vehicle, transactions
+from .models import CustomUser, vehicle, transactions, pumpInfo
 from rest_framework.response import Response
 from rest_framework import status
-from .serializers import TankSerializer, TankdetailSerializer, TransactionSerializer
+from .serializers import TankSerializer, TransactionSerializer, PumpSerializer
 from rest_framework.views import APIView
 
 from django.contrib import messages
@@ -219,3 +219,33 @@ class TransactionsBulkCreateView(APIView):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+
+class PumpStatus(APIView):
+    def post(self, request, *args, **kwargs):
+        # Assuming you pass the pumpNumber and any other fields you want to update in the request data
+
+        pump_number = request.data.get('pumpNumber')
+        if not pump_number:
+            return Response({'error': 'pumpNumber is required'}, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            pump_instance = pumpInfo.objects.get(pumpNumber=pump_number)
+        except pumpInfo.DoesNotExist:
+            return Response({'error': 'Pump not found'}, status=status.HTTP_404_NOT_FOUND)
+
+        # Update pumpStatus if provided in request data
+        pump_status = request.data.get('pumpStatus')
+        if pump_status is not None:
+            pump_instance.pumpStatus = pump_status
+
+        # Update other fields if provided in request data
+        pump_instance.vehicleNumber = request.data.get('vehicleNumber', pump_instance.vehicleNumber)
+        pump_instance.odometer = request.data.get('odometer', pump_instance.odometer)
+
+        pump_instance.save()
+
+        serializer = PumpSerializer(pump_instance)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+

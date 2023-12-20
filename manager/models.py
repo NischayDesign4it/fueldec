@@ -67,7 +67,7 @@ class transactions(models.Model):
 class pumpInfo(models.Model):
     id = models.AutoField(primary_key=True)
     pumpNumber = models.CharField(max_length=20)
-    vehicleNumber = models.CharField(max_length=50)
+    vehicleNumber = models.CharField(max_length=50, null= True)
     odometer = models.IntegerField(null=True)
     pumpStatus = models.BooleanField(default=False)
 
