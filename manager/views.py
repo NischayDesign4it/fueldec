@@ -221,31 +221,27 @@ class TransactionsBulkCreateView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
+class PumpInfo(APIView):
+    def post(self, request):
+        serializer = PumpSerializer(data=request.data)
+        if serializer.is_valid():
+            pump_number = serializer.validated_data['pumpNumber']
+            pump_info, created = pumpInfo.objects.get_or_create(pumpNumber=pump_number)
 
-class PumpStatus(APIView):
-    def post(self, request, *args, **kwargs):
-        # Assuming you pass the pumpNumber and any other fields you want to update in the request data
+            pump_info.vehicleNumber = serializer.validated_data.get('vehicleNumber', pump_info.vehicleNumber)
+            pump_info.odometer = serializer.validated_data.get('odometer', pump_info.odometer)
+            pump_info.pumpStatus = serializer.validated_data.get('pumpStatus', pump_info.pumpStatus)
 
-        pump_number = request.data.get('pumpNumber')
-        if not pump_number:
-            return Response({'error': 'pumpNumber is required'}, status=status.HTTP_400_BAD_REQUEST)
+            pump_info.save()
 
-        try:
-            pump_instance = pumpInfo.objects.get(pumpNumber=pump_number)
-        except pumpInfo.DoesNotExist:
-            return Response({'error': 'Pump not found'}, status=status.HTTP_404_NOT_FOUND)
+            return Response(PumpSerializer(pump_info).data,
+                            status=status.HTTP_201_CREATED if created else status.HTTP_200_OK)
 
-        # Update pumpStatus if provided in request data
-        pump_status = request.data.get('pumpStatus')
-        if pump_status is not None:
-            pump_instance.pumpStatus = pump_status
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-        # Update other fields if provided in request data
-        pump_instance.vehicleNumber = request.data.get('vehicleNumber', pump_instance.vehicleNumber)
-        pump_instance.odometer = request.data.get('odometer', pump_instance.odometer)
 
-        pump_instance.save()
-
-        serializer = PumpSerializer(pump_instance)
-        return Response(serializer.data, status=status.HTTP_200_OK)
-
+class PumpInfoList(APIView):
+    def get(self, request, format=None):
+        pump_infos = pumpInfo.objects.all()
+        serializer = PumpSerializer(pump_infos, many=True)
+        return Response(serializer.data)

@@ -72,4 +72,4 @@ class pumpInfo(models.Model):
     pumpStatus = models.BooleanField(default=False)
 
     def __str__(self):
-        return self.vehicleNumber
+        return self.pumpNumber

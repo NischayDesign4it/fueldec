@@ -1,6 +1,6 @@
 from django.urls import path
 
-from .views import transaction, getBuyDate, VehicleList, TransactionsBulkCreateView,PumpStatus
+from .views import transaction, getBuyDate, VehicleList, TransactionsBulkCreateView,PumpInfo, PumpInfoList
 from . import views
 
 urlpatterns = [
@@ -10,7 +10,8 @@ urlpatterns = [
     path("vehicle-list/", VehicleList.as_view(), name="VehicleList-log"),
     path("transaction/", transaction.as_view(), name="transaction"),
     path('transactions/bulk-create/', TransactionsBulkCreateView.as_view(), name='transactions-bulk-create'),
-    path('pump-status/', PumpStatus.as_view(), name='PumpStatus'),
+    path('pump-status/', PumpInfo.as_view(), name='PumpStatus'),
+    path('pump-list/', PumpInfoList.as_view(), name='PumpInfoList'),
 
     # path("odometer/", odometer.as_view(), name="odometer"),
 
