@@ -59,7 +59,7 @@ class transactions(models.Model):
     vehicleNumber = models.CharField(max_length=50)
     odometer = models.IntegerField(null=True)
     dispensedQuantity = models.IntegerField(null=True)
-    timestamp = models.DateTimeField(auto_now_add=True)
+    timestamp = models.DateTimeField()
 
     def __str__(self):
         return self.vehicleNumber
