@@ -1,4 +1,7 @@
-from datetime import datetime
+import csv
+import openpyxl
+
+from datetime import datetime, time
 
 from django.shortcuts import render, redirect
 from django.views import View
@@ -150,6 +153,44 @@ class transaction(View):
     def get(self, request):
         vehicle_details = transactions.objects.all()
         return render(request, self.template_name, {'vehicle_details': vehicle_details})
+
+def export_csv(request):
+    response = HttpResponse(content_type='text/csv')
+
+    response['Content-Disposition'] = 'attachment; filename="transactions-'+str(datetime.now())+".csv"
+
+    writer = csv.writer(response)
+    writer.writerow(['Sr.No', 'Vehicle Number', 'Odometer', 'dispensedQuantity', 'TimeStamp'])
+
+    for obj in transactions.objects.all():
+        writer.writerow([obj.id, obj.vehicleNumber, obj.odometer, obj.dispensedQuantity, obj.timestamp])
+
+    return response
+
+def export_excel(request):
+    response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+    response['Content-Disposition'] = 'attachment; filename="transactions-'+str(datetime.now())+".xlsx"
+
+    workbook = openpyxl.Workbook()
+    worksheet = workbook.active
+    worksheet.title = 'My Data'
+
+    # Write header row
+    header = ['Sr.No', 'Vehicle Number', 'Odometer', 'dispensedQuantity', 'TimeStamp']
+    for col_num, column_title in enumerate(header, 1):
+        cell = worksheet.cell(row=1, column=col_num)
+        cell.value = column_title
+
+    # Write data rows
+    queryset = transactions.objects.all().values_list('id', 'vehicleNumber', 'odometer','dispensedQuantity','timestamp' )
+    for row_num, row in enumerate(queryset, 1):
+        for col_num, cell_value in enumerate(row, 1):
+            cell = worksheet.cell(row=row_num+1, column=col_num)
+            cell.value = str(cell_value)
+
+    workbook.save(response)
+
+    return response
 
 
 @api_view(['POST'])

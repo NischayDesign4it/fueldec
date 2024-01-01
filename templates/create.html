@@ -131,6 +131,26 @@
             margin-top: 0px;
             
         }
+         .dropdown {
+          position: absolute;
+            top: 40px;
+            right: 150px;
+            display: inline-block;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #f9f9f9;
+            min-width: 160px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+            z-index: 1;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
 
     </style>
 </head>
@@ -139,10 +159,40 @@
         <img src="{% static 'icon.png' %}" width="100", height="80">
 
         <h1>Fuel Management System</h1>
+
+        <div class="dropdown">
+        <button class="dropbtn">Download Transactions</button>
+        <div class="dropdown-content">
+            <form action="{% url 'download-csv' %}" method="get">
+                <button type="submit">CSV</button>
+            </form>
+            <form action="{% url 'download-excel' %}" method="get">
+                <button type="submit">Excel</button>
+            </form>
+        </div>
     </div>
+
+    </div>
+
+
+
     <h1>Create a New Vehicle</h1>
 
-    <a class="add-transaction-button" href="{% url 'transaction' %}">Transactions</a>
+    <button class="add-transaction-button" href="{% url 'transaction' %}">Transactions</button>
+
+
+
+
+
+
+
+
+<!--    <form action="{% url 'download-csv' %}" method="get">-->
+<!--    <button type="submit">Download CSV</button>-->
+<!--</form>-->
+<!--        <form action="{% url 'download-excel' %}" method="get">-->
+<!--    <button type="submit">Download Excel</button>-->
+<!--</form>-->
 
 
     {% if messages %}
