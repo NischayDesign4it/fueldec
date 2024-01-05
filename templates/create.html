@@ -21,15 +21,6 @@
             padding: 20px;
         }
 
-        .footer {
-            background-color: #f2f2f2;
-            color: black;
-            padding: 10px;
-            position: absolute;
-            bottom: 0;
-            width: 100%;
-            text-align: justify;
-        }
 
         h1 {
             color: black;
@@ -113,18 +104,18 @@
 
         .add-transaction-button {
             position: absolute;
-            top: 40px;
-            right: 20px;
+            top: 38px;
+            right: 10px;
             color: white;
+            font-size: 15px;
             background-color: #4CAF50;
             padding: 10px 20px;
             border-radius: 5px;
-            text-decoration: none;
         }
 
-        .add-transaction-button:hover {
-            background-color: #45a049;
-        }
+<!--        .add-transaction-button:hover {-->
+<!--            background-color: #45a049;-->
+<!--        }-->
         .header img {
             float: left; /* Float the image to the left */
             margin-right: 20px; /* Adjust the margin as needed */
@@ -178,7 +169,7 @@
 
     <h1>Create a New Vehicle</h1>
 
-    <button class="add-transaction-button" href="{% url 'transaction' %}">Transactions</button>
+    <a class="add-transaction-button" href="{% url 'transaction' %}">Transactions</a>
 
 
 
@@ -224,10 +215,8 @@
         </tr>
         {% endfor %}
     </table>
-    <div class="footer">
-        
-        <p style="text-align: center;">Copyright 2023 All Rights Reserved</p>
-    </div>
+
+
 
 </body>
 </html>
