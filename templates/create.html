@@ -41,11 +41,7 @@
             text-align: left;
         }
 
-        .form-field {
-            display: inline-block;
-            width: 48%;
-            margin-right: 2%;
-        }
+   
 
         button {
             padding: 10px 20px;
@@ -113,9 +109,9 @@
             border-radius: 5px;
         }
 
-<!--        .add-transaction-button:hover {-->
+/* <!--    .add-transaction-button:hover {-->
 <!--            background-color: #45a049;-->
-<!--        }-->
+<!--        }--> */
         .header img {
             float: left; /* Float the image to the left */
             margin-right: 20px; /* Adjust the margin as needed */
@@ -194,24 +190,36 @@
     </ul>
     {% endif %}
 
-    <form method="post">
+    <form method="post" class="form1">
         {% csrf_token %}
         {{ form.as_p }}
         <button type="submit">Create Vehicle</button>
     </form>
 
-    <h2>Vehicle Status</h2>
+    <h2>Vehicle Details</h2>
     <table>
         <tr>
             <th>Sr. No.</th>
             <th>Vehicle Number</th>
             <th>Quantity</th>
+            <th>vehicle Id</th>
+            <th>gallon Limit</th>
+            <th>odometer</th>
+            <th>company Name</th>
+            <th>product Name</th>
+            <th>total Gallon</th>
         </tr>
         {% for vehicles in vehicle %}
         <tr>
             <td>{{ vehicles.id }}</td>
             <td>{{ vehicles.vehicleNumber }}</td>
             <td>{{ vehicles.quantity }}</td>
+            <td>{{vehicles.vehicleId}}</td>
+            <td>{{vehicles.gallonLimit}}</td>
+            <td>{{vehicles.odometer}}</td>
+            <td>{{vehicles.companyName}}</td>
+            <td>{{vehicles.productName}}</td>
+            <td>{{vehicles.totalGallon}}</td>
         </tr>
         {% endfor %}
     </table>

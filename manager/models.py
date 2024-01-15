@@ -48,7 +48,15 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
 
 class vehicle(models.Model):
     vehicleNumber = models.CharField(max_length=50, unique=True)
+    vehicleId = models.CharField(max_length=50, unique=True)
     quantity = models.IntegerField(null=True)
+    gallonLimit = models.IntegerField(null=True,default=0)
+    odometer = models.IntegerField(null=True)
+    companyName = models.CharField(null=False, max_length=50)
+    productName = models.CharField(null=False, max_length=50)
+    totalGallon = models.IntegerField(null=True,default=0)
+    meteredHours = models.IntegerField(default=0)
+    date = models.DateTimeField(auto_now_add=True)
 
 
     def __str__(self):
@@ -57,8 +65,13 @@ class vehicle(models.Model):
 class transactions(models.Model):
     id = models.AutoField(primary_key=True)
     vehicleNumber = models.CharField(max_length=50)
+    vehicleId = models.CharField(max_length=50, unique=True)
+    gallonLimit = models.IntegerField(null=False)
     odometer = models.IntegerField(null=True)
-    dispensedQuantity = models.IntegerField(null=True)
+    companyName = models.CharField(null=False, max_length=50)
+    productName = models.CharField(null=False, max_length=50)
+    totalGallon = models.IntegerField(null=False)
+    meteredHours = models.IntegerField(default=0)
     timestamp = models.DateTimeField()
 
     def __str__(self):
@@ -67,7 +80,7 @@ class transactions(models.Model):
 class pumpInfo(models.Model):
     id = models.AutoField(primary_key=True)
     pumpNumber = models.CharField(max_length=20)
-    vehicleNumber = models.CharField(max_length=50, null= True)
+    vehicleNumber = models.CharField(max_length=50, null=True)
     odometer = models.IntegerField(null=True)
     pumpStatus = models.BooleanField(default=False)
 

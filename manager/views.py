@@ -73,7 +73,7 @@ def enter_vehicle_data(request):
             form.save()
             messages.success(request, 'Vehicle data has been successfully entered.')
 
-    vehicleDetails = vehicle.objects.all()  # Retrieve the Tank objects
+    vehicleDetails = vehicle.objects.all() 
 
     form = TankForm()
 
@@ -176,13 +176,13 @@ def export_excel(request):
     worksheet.title = 'My Data'
 
     # Write header row
-    header = ['Sr.No', 'Vehicle Number', 'Odometer', 'dispensedQuantity', 'TimeStamp']
+    header = ['Sr.No', 'Vehicle Number', 'Odometer', 'Gallon Limit', 'TimeStamp']
     for col_num, column_title in enumerate(header, 1):
         cell = worksheet.cell(row=1, column=col_num)
         cell.value = column_title
 
     # Write data rows
-    queryset = transactions.objects.all().values_list('id', 'vehicleNumber', 'odometer','dispensedQuantity','timestamp' )
+    queryset = transactions.objects.all().values_list('id', 'vehicleNumber', 'odometer','gallonLimit','timestamp' )
     for row_num, row in enumerate(queryset, 1):
         for col_num, cell_value in enumerate(row, 1):
             cell = worksheet.cell(row=row_num+1, column=col_num)

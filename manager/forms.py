@@ -13,5 +13,5 @@ class LoginForm(forms.Form):
 class TankForm(forms.ModelForm):
     class Meta:
         model = vehicle
-        fields = ['vehicleNumber']
+        fields = ['vehicleNumber','vehicleId','gallonLimit','odometer','companyName','productName','totalGallon','meteredHours']
 
